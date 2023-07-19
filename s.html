@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name=viewport
+          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui">
+    <meta name="referrer" content="no-referrer">
+</head>
+<body>
+
+<script src="https://cdn.qjurl.cn/axios.min.js"></script>
+
+<script type="text/javascript">
+    function getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
+
+    function getVideo(height) {
+        axios.post('https://heedh.cn/short_url/get_short', {
+            id: getQueryString("k")
+        }).then(function (response) {
+            if (response.data.code === 1) {
+                window.location.href = response.data.url
+            } else {
+                alert("404 网页未找到")
+            }
+
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    getVideo()
+</script>
+</body>
+</html>

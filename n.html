@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="referrer" content="no-referrer">
+    <title>网页</title>
+    <script src="https://cdn.qjurl.cn/axios.min.js"></script>
+
+    <style>
+        .container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<object data="https://www.baidu.com" width="0" height="0"></object>
+<div class="container">
+    <iframe class="fullscreen"  id="myFrame"></iframe>
+</div>
+
+
+
+<script type="text/javascript">
+    var iframe = document.getElementById('myFrame');
+
+    function getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
+
+    function getVideo() {
+        axios.post('https://heedh.cn/short_url_shield/get_short', {
+            id: getQueryString("k")
+        }).then(function (response) {
+            if (response.data.code === 1) {
+                iframe.src = response.data.url
+            } else {
+                alert("404 网页未找到")
+            }
+
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    getVideo()
+</script>
+</body>
+
+</html>

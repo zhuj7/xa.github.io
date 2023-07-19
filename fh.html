@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>请使用浏览器打开</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta content="false" name="twcClient" id="twcClient" />
+    <meta name="aplus-touch" content="1" />
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%
+        }
+
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            background-color: #fff
+        }
+
+        .top-bar-guidance {
+            font-size: 15px;
+            color: #fff;
+            height: 70%;
+            line-height: 1.8;
+            padding-left: 20px;
+            padding-top: 20px;
+            background: url(https://kjimg10.360buyimg.com/ott/jfs/t20250307/207431/39/20157/87633/64089c79F31083bbf/1faa308688fde040.png) center top/contain no-repeat
+        }
+
+        .top-bar-guidance .icon-safari {
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+            margin: 0 .2em
+        }
+
+        .app-download-tip {
+            margin: 0 auto;
+            width: 290px;
+            text-align: center;
+            font-size: 15px;
+            color: #2466f4;
+            background: url(https://ae01.alicdn.com/kf/Hc399f9b976914d0297397c1e4c14fe82l.png) left center/auto 15px repeat-x
+        }
+
+        .app-download-tip .guidance-desc {
+            background-color: #fff;
+            padding: 0 5px
+        }
+
+        .app-download-btn {
+            display: block;
+            width: 214px;
+            height: 40px;
+            line-height: 40px;
+            margin: 18px auto 0 auto;
+            text-align: center;
+            font-size: 18px;
+            color: #2466f4;
+            border-radius: 20px;
+            border: .5px #2466f4 solid;
+            text-decoration: none
+        }
+    </style>
+</head>
+
+<body>
+<div class="top-bar-guidance">
+    <p>点击右上角<img src="https://kjimg10.360buyimg.com/ott/jfs/t20250307/121011/17/36000/2398/64089bd5F73697b83/ebf6285602d5124b.png" class="icon-safari" />
+        <span id="openm">浏览器打开</span>
+    </p>
+    <p>可以继续浏览本站哦~</p>
+</div>
+<div class="app-download-tip">
+    <span class="guidance-desc">您也可以复制本站网址，到其它浏览器打开</span>
+</div>
+<a  class="app-download-btn" id="fz" onclick="fz()">点击复制网址</a>
+<a style="display: none;" href="" id="dwz"></a>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://lib.baomitu.com/clipboard.js/2.0.6/clipboard.min.js"></script>
+<script src="https://cdn.qjurl.cn/axios.min.js"></script>
+</body>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
+
+    function getVideo(height) {
+        axios.post('https://heedh.cn/short_url_shield/get_short', {
+            id: getQueryString("k")
+        }).then(function (response) {
+            if (response.data.code === 1) {
+                var clipboard = document.getElementById("fz");
+                var longurl = document.getElementById("dwz");
+                longurl.href = response.data.url
+                clipboard.dataset.clipboardText = response.data.url;
+
+
+                // 拼接出一个QQ浏览器支持的URL scheme
+                const qqBrowserScheme = `mttbrowser://url=${response.data.url}`;
+
+                // 在新窗口中打开URL scheme
+                window.open(qqBrowserScheme, "_system");
+            } else {
+                alert("404 网页未找到")
+            }
+
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    getVideo()
+
+    new ClipboardJS('#fz');
+
+    function fz() {
+        $('#fz').text('复制成功');
+    }
+
+    var longurl = document.getElementById("dwz").href;
+    var Turl = longurl;
+
+
+    window.onresize = function () {setRootFontSize();}
+</script>
+
+</html>
